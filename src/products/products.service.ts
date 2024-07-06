@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
@@ -20,8 +20,11 @@ export class ProductsService {
     return this.products;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  findOne(id: string): Product {
+    const product = this.products.find((product) => product.id === id);
+
+    if (!product) throw new NotFoundException(`Product with ${id} not found`);
+    return product;
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
