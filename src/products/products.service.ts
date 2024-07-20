@@ -28,8 +28,14 @@ export class ProductsService {
     return product;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  update(id: string, updateProductDto: UpdateProductDto) {
+    // renombramos id para no tomarlo en cuenta (tambien para que no choque con el otro id)
+    const { id: __, name, description, price } = updateProductDto;
+
+    const product = this.findOne(id);
+
+    product.updateWith({ name, description, price });
+    return product;
   }
 
   remove(id: string) {
